@@ -29,7 +29,7 @@ public class WordleExec {
     }
 
     private void readFile() throws IOException {
-        File file = new File("input.txt");
+        File file = new File("src\\main\\java\\wordle\\input.txt");
         FileReader fr=new FileReader(file);   //reads the file
         BufferedReader br=new BufferedReader(fr);  //creates a buffering character input stream
         String line;
@@ -95,12 +95,21 @@ public class WordleExec {
     private void view() {
         System.out.println("abc");
     }
+    
+    private void showUsage() {
+        System.out.println("Usage :");
+        System.out.println("To Whitelist a char +<char to whaitelist\nex: +a");
+        System.out.println("To blacklist a char -<char to whaitelist\nex: -a");
+        System.out.println("To Show the complete list, *\nex: *");
+        System.out.println("To Suggest any random %, *\nex: %");
+    }
 
     public static void main(String[] args) throws IOException {
 
         WordleExec wordleExec = new WordleExec();
         wordleExec.readFile();
         wordleExec.loadInMemory();
+        wordleExec.showUsage();
 
         Scanner sc = new Scanner(System.in);
 
@@ -116,12 +125,20 @@ public class WordleExec {
                 for (String s : wordleExec.shortlistedChars) {
                     System.out.println(s);
                 }
+            } else if (userInput[0] == '%') {
+                Set<String> setToAct = wordleExec.shortlistedChars.size() != 0 ?
+                        wordleExec.shortlistedChars : wordleExec.wordleDict;
+                int random = new Random().nextInt(setToAct.size());
+                int i = 0;
+                for (String s : setToAct) {
+                    if (i++ == random) {
+                        System.out.println(s);
+                    }
+                }
             }
 
             wordleExec.shortlist();
 //            wordleExec.shortListWithPos();
-
-            wordleExec.view();
         }
 
     }
